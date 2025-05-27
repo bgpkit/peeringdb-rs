@@ -10,7 +10,6 @@
 
 ## License
 
-We do not provide data.
-See [PeeringDB Acceptable Use Policy](https://www.peeringdb.com/aup) more license information.
+See [PeeringDB Acceptable Use Policy](https://www.peeringdb.com/aup) for usage and license information.
 
 The usage of this library is under MIT license.

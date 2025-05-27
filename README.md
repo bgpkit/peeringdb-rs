@@ -37,6 +37,6 @@ Without it, the API call will likely to fail due to rate limiting.
 
 ## License
 
-See [PeeringDB Acceptable Use Policy](https://www.peeringdb.com/aup) more usage license information.
+See [PeeringDB Acceptable Use Policy](https://www.peeringdb.com/aup) for usage and license information.
 
 The usage of this library is under MIT license.
