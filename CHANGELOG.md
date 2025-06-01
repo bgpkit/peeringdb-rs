@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## v0.1.1 -- 2025-05-31
+
+### Highlights
+
+* use `rustls` for TLS connections
+    * updated to `oneio` v0.18.1
+
 ## v0.1.0 -- 2025-05-27
 
 Add four functions to load corresponding data entries from PeeringDB:
