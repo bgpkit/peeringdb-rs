@@ -10,10 +10,13 @@ pub(crate) fn get_reader(url: &str) -> Result<Box<dyn Read + Send>> {
         "".to_string()
     });
 
-    let client = create_client_with_headers([(
-        "Authorization".to_string(),
-        format!("Api-Key {}", api_key),
-    )])?;
+    let client = create_client_with_headers([
+        ("Authorization".to_string(), format!("Api-Key {}", api_key)),
+        (
+            "User-Agent".to_string(),
+            format!("peeringdb-rs/{}", env!("CARGO_PKG_VERSION")),
+        ),
+    ])?;
     let res = client
         .execute(client.get(url).build()?)?
         .error_for_status()?;
