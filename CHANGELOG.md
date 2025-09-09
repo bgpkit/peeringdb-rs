@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## v0.1.2 -- 2025-09-09
+
+### Highlights
+
+* add `User-Agent` header to requests to avoid getting "403 Forbidden" responses from PeeringDB
+* updated to `oneio` v0.19.0`
+
 ## v0.1.1 -- 2025-05-31
 
 ### Highlights
