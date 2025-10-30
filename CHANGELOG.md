@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## v0.1.3 -- 2025-09-09
+## v0.1.3 -- 2025-10-29
 
 * update to `oneio` v0.20.0 with better control over rustls cryto providers
 
