@@ -35,7 +35,7 @@ pub struct PeeringdbNetixlanResponse {
 }
 
 pub fn load_peeringdb_netixlan() -> Result<Vec<PeeringdbNetixlan>> {
-    let mut reader = get_reader("https://www.peeringdb.com/api/org")?;
+    let mut reader = get_reader("https://www.peeringdb.com/api/netixlan")?;
     let mut buf = String::new();
     reader.read_to_string(&mut buf)?;
     let res: PeeringdbNetixlanResponse = serde_json::from_str(&buf)?;
@@ -50,5 +50,8 @@ mod tests {
     fn test_loading_data() {
         let vec = load_peeringdb_netixlan().unwrap();
         dbg!(&vec[0]);
+        // org records also deserialize into PeeringdbNetixlan (only `id` is required),
+        // so check for a netixlan-specific field to make sure we hit the right endpoint
+        assert!(vec.iter().any(|n| n.asn.is_some()));
     }
 }
