@@ -1,4 +1,4 @@
-use crate::data::utils::get_reader;
+use crate::data::utils::get_reader_with_params;
 use anyhow::Result;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
@@ -56,7 +56,16 @@ struct PeeringdbNetResponse {
 }
 
 pub fn load_peeringdb_net() -> Result<Vec<PeeringdbNet>> {
-    let mut reader = get_reader("https://www.peeringdb.com/api/net")?;
+    load_peeringdb_net_filtered(&[])
+}
+
+/// Same as [load_peeringdb_net], filtered by PeeringDB API query parameters,
+/// e.g. `&[("asn", "13335")]`. See the [list net][api] documentation for the available
+/// fields.
+///
+/// [api]: https://www.peeringdb.com/apidocs/#tag/api/operation/list%20net
+pub fn load_peeringdb_net_filtered(params: &[(&str, &str)]) -> Result<Vec<PeeringdbNet>> {
+    let mut reader = get_reader_with_params("https://www.peeringdb.com/api/net", params)?;
     let mut buf = String::new();
     reader.read_to_string(&mut buf)?;
     let res: PeeringdbNetResponse = serde_json::from_str(&buf)?;

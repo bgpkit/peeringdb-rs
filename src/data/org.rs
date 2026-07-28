@@ -1,4 +1,4 @@
-use crate::data::utils::get_reader;
+use crate::data::utils::get_reader_with_params;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
@@ -33,7 +33,16 @@ struct PeeringdbOrgResponse {
 }
 
 pub fn load_peeringdb_org() -> anyhow::Result<Vec<PeeringdbOrg>> {
-    let mut reader = get_reader("https://www.peeringdb.com/api/org")?;
+    load_peeringdb_org_filtered(&[])
+}
+
+/// Same as [load_peeringdb_org], filtered by PeeringDB API query parameters,
+/// e.g. `&[("country", "DE")]`. See the [list org][api] documentation for the available
+/// fields.
+///
+/// [api]: https://www.peeringdb.com/apidocs/#tag/api/operation/list%20org
+pub fn load_peeringdb_org_filtered(params: &[(&str, &str)]) -> anyhow::Result<Vec<PeeringdbOrg>> {
+    let mut reader = get_reader_with_params("https://www.peeringdb.com/api/org", params)?;
     let mut buf = String::new();
     reader.read_to_string(&mut buf)?;
     let res: PeeringdbOrgResponse = serde_json::from_str(&buf)?;

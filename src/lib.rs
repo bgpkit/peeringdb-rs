@@ -15,6 +15,11 @@
 //! Use the public function `load_peeringdb_XXXX()` to get a Vec of the corresponding data objects above.
 //! For example, [load_peeringdb_net] will return a Vec of [PeeringdbNet] if success.
 //!
+//! Each data type also has a `load_peeringdb_XXXX_filtered()` variant that takes
+//! PeeringDB API query parameters, so you can fetch a subset instead of the whole
+//! table. For example, `load_peeringdb_netixlan_filtered(&[("ix_id", "26")])`
+//! fetches only the netixlan records of one exchange.
+//!
 //! [api_net]: https://www.peeringdb.com/apidocs/#tag/api/operation/list%20net
 //! [api_org]: https://www.peeringdb.com/apidocs/#tag/api/operation/list%20org
 //! [api_ix]: https://www.peeringdb.com/apidocs/#tag/api/operation/list%20ix
@@ -29,7 +34,7 @@
 
 mod data;
 
-pub use data::{PeeringdbIx, load_peeringdb_ix};
-pub use data::{PeeringdbNet, load_peeringdb_net};
-pub use data::{PeeringdbNetixlan, load_peeringdb_netixlan};
-pub use data::{PeeringdbOrg, load_peeringdb_org};
+pub use data::{PeeringdbIx, load_peeringdb_ix, load_peeringdb_ix_filtered};
+pub use data::{PeeringdbNet, load_peeringdb_net, load_peeringdb_net_filtered};
+pub use data::{PeeringdbNetixlan, load_peeringdb_netixlan, load_peeringdb_netixlan_filtered};
+pub use data::{PeeringdbOrg, load_peeringdb_org, load_peeringdb_org_filtered};
