@@ -3,7 +3,7 @@
 //! This is a useful data to connect ASNs to IXes and find connected networks that share the same IX
 //! connectivity.
 
-use crate::data::utils::get_reader;
+use crate::data::utils::get_reader_with_params;
 use anyhow::Result;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
@@ -35,7 +35,16 @@ pub struct PeeringdbNetixlanResponse {
 }
 
 pub fn load_peeringdb_netixlan() -> Result<Vec<PeeringdbNetixlan>> {
-    let mut reader = get_reader("https://www.peeringdb.com/api/netixlan")?;
+    load_peeringdb_netixlan_filtered(&[])
+}
+
+/// Same as [load_peeringdb_netixlan], filtered by PeeringDB API query parameters,
+/// e.g. `&[("ix_id", "26")]`. See the [list netixlan][api] documentation for the available
+/// fields.
+///
+/// [api]: https://www.peeringdb.com/apidocs/#tag/api/operation/list%20netixlan
+pub fn load_peeringdb_netixlan_filtered(params: &[(&str, &str)]) -> Result<Vec<PeeringdbNetixlan>> {
+    let mut reader = get_reader_with_params("https://www.peeringdb.com/api/netixlan", params)?;
     let mut buf = String::new();
     reader.read_to_string(&mut buf)?;
     let res: PeeringdbNetixlanResponse = serde_json::from_str(&buf)?;

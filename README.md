@@ -23,6 +23,11 @@ This is an _**unofficial**_ crate and use it with caution.
 Use the public function `load_peeringdb_XXXX()` to get a Vec of the corresponding data objects above.
 For example, [load_peeringdb_net] will return a Vec of [PeeringdbNet] if success.
 
+Each data type also has a `load_peeringdb_XXXX_filtered()` variant that takes
+PeeringDB API query parameters, so you can fetch a subset instead of the whole
+table. For example, `load_peeringdb_netixlan_filtered(&[("ix_id", "26")])`
+fetches only the netixlan records of one exchange.
+
 [api_net]: https://www.peeringdb.com/apidocs/#tag/api/operation/list%20net
 [api_org]: https://www.peeringdb.com/apidocs/#tag/api/operation/list%20org
 [api_ix]: https://www.peeringdb.com/apidocs/#tag/api/operation/list%20ix

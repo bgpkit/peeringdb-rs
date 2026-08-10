@@ -1,6 +1,6 @@
 //! `ix` objects contains information of Internet Exchanges
 
-use crate::data::utils::get_reader;
+use crate::data::utils::get_reader_with_params;
 use anyhow::Result;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
@@ -54,7 +54,16 @@ struct PeeringdbIxResponse {
 }
 
 pub fn load_peeringdb_ix() -> Result<Vec<PeeringdbIx>> {
-    let mut reader = get_reader("https://www.peeringdb.com/api/ix")?;
+    load_peeringdb_ix_filtered(&[])
+}
+
+/// Same as [load_peeringdb_ix], filtered by PeeringDB API query parameters,
+/// e.g. `&[("country", "DE")]`. See the [list ix][api] documentation for the available
+/// fields.
+///
+/// [api]: https://www.peeringdb.com/apidocs/#tag/api/operation/list%20ix
+pub fn load_peeringdb_ix_filtered(params: &[(&str, &str)]) -> Result<Vec<PeeringdbIx>> {
+    let mut reader = get_reader_with_params("https://www.peeringdb.com/api/ix", params)?;
     let mut buf = String::new();
     reader.read_to_string(&mut buf)?;
     let res: PeeringdbIxResponse = serde_json::from_str(&buf)?;
