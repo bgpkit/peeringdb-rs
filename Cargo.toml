@@ -1,6 +1,6 @@
 [package]
 name = "peeringdb-rs"
-version = "0.1.3"
+version = "0.2.0"
 authors = ["Mingwei Zhang <mingwei@bgpkit.com>"]
 edition = "2024"
 readme = "README.md"
