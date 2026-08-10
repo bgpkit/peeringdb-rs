@@ -5,18 +5,20 @@ use tracing::warn;
 
 pub(crate) fn get_reader(url: &str) -> Result<Box<dyn Read + Send>> {
     dotenvy::dotenv().ok();
-    let api_key = std::env::var("PEERINGDB_API_KEY").unwrap_or_else(|_e| {
-        warn!("missing PEERINGDB_API_KEY env var, call may fail due load restriction");
-        "".to_string()
-    });
+    let mut headers = vec![(
+        "User-Agent".to_string(),
+        format!("peeringdb-rs/{}", env!("CARGO_PKG_VERSION")),
+    )];
+    match std::env::var("PEERINGDB_API_KEY") {
+        Ok(api_key) if !api_key.is_empty() => {
+            headers.push(("Authorization".to_string(), format!("Api-Key {}", api_key)));
+        }
+        _ => {
+            warn!("missing PEERINGDB_API_KEY env var, call may fail due load restriction");
+        }
+    }
 
-    let client = create_client_with_headers([
-        ("Authorization".to_string(), format!("Api-Key {}", api_key)),
-        (
-            "User-Agent".to_string(),
-            format!("peeringdb-rs/{}", env!("CARGO_PKG_VERSION")),
-        ),
-    ])?;
+    let client = create_client_with_headers(headers)?;
     let res = client
         .execute(client.get(url).build()?)?
         .error_for_status()?;
